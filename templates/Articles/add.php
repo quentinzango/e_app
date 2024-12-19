@@ -25,12 +25,7 @@
                     echo $this->Form->control('subcategorie_id', ['options' => $subcategories]);
 
                     // Modification du champ 'image' pour accepter le téléchargement de fichiers
-                    echo $this->Form->control('image', [
-                        'type' => 'file',
-                        'label' => 'image',
-                        'accept' => 'image/*' // Restreint aux fichiers image (jpg, png, etc.)
-                    ]);
-
+                    echo $this->Form->control('image', ['type' => 'file']);
                     echo $this->Form->control('name');
                     echo $this->Form->control('description');
                     echo $this->Form->control('price');
