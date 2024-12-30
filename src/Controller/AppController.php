@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\View\Helper;
 
 /**
  * Application Controller
@@ -48,5 +49,23 @@ class AppController extends Controller
          * see https://book.cakephp.org/5/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+        $this->viewBuilder()->setLayout('default');
+        
     }
+
+    /**
+     * public function beforeRender(\Cake\Event\EventInterface $event): void
+        *{
+        *parent::beforeRender($event);
+
+        * Exemple : Définir un layout spécifique pour les utilisateurs connectés
+        *if ($this->request->getSession()->check('Auth.User')) {
+           * $this->viewBuilder()->setLayout('custom_layout');
+        *} else {
+          *  $this->viewBuilder()->setLayout('default');
+       * }
+   * }
+     */
+
+
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\View\Helper;
 
 use Cake\View\Helper;
-use Cake\View\View;
 
 /**
  * Title helper
@@ -18,21 +17,21 @@ class TitleHelper extends Helper
      */
     protected $_defaultConfig = [];
 
-    protected $appName="ZaqMarket";
+    protected string $appName = "ZaqMarket";
 
-    public function getTitle(){
+    public function getTitle(?string $pageTitle = null, ?string $pageSubTitle = null): string
+    {
         $title = "";
 
-        if(isset($pageTitle)){
+        if (!empty($pageTitle)) {
             $title .= $pageTitle;
         }
 
-        if(isset($pageSubTitle)){
-            $title .= (strlen($title) > 0 ? " - ": " ") . $pageSubTitle;
+        if (!empty($pageSubTitle)) {
+            $title .= (strlen($title) > 0 ? " - " : "") . $pageSubTitle;
         }
 
-        $title .= (strlen($title) > 0 ? " - ": " ") . $this->appName;
+        $title .= (strlen($title) > 0 ? " - " : "") . $this->appName;
         return $title;
     }
-
 }
