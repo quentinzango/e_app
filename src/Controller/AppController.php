@@ -50,6 +50,8 @@ class AppController extends Controller
          */
         //$this->loadComponent('FormProtection');
         $this->viewBuilder()->setLayout('default');
+
+        $this->loadComponent('Authentication.Authentication');
         
     }
 

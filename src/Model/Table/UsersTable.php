@@ -7,6 +7,8 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\Event\EventInterface;
 
 /**
  * Users Model
@@ -122,5 +124,12 @@ class UsersTable extends Table
         $rules->add($rules->existsIn(['role_id'], 'Roles'), ['errorField' => 'role_id']);
 
         return $rules;
+    }
+
+    public function beforeSave(EventInterface $event, $entity, $options)
+    {
+        if ($entity->isNew() && !empty($entity->password)) {
+            $entity->password = (new DefaultPasswordHasher())->hash($entity->password);
+        }
     }
 }
