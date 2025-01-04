@@ -19,12 +19,30 @@ class UsersController extends AppController
 
     public function index()
     {
+        // Récupérer la valeur de la recherche depuis les paramètres de la requête
+        $search = $this->request->getQuery('search');
+
+        // Construire la requête de recherche
         $query = $this->Users->find()
-            ->contain(['Roles']);
+            ->contain(['Roles']); // Inclure les rôles pour utilisation dans la vue
+
+        // Si une valeur de recherche est présente, ajouter des conditions à la requête
+        if (!empty($search)) {
+            $query->where([
+                'OR' => [
+                    'Users.name LIKE' => '%' . $search . '%',
+                    'Users.email LIKE' => '%' . $search . '%',
+                ]
+            ]);
+        }
+
+        // Paginer les résultats
         $users = $this->paginate($query);
 
-        $this->set(compact('users'));
+        // Passer les résultats et la recherche à la vue
+        $this->set(compact('users', 'search'));
     }
+
 
     /**
      * View method
@@ -108,16 +126,13 @@ class UsersController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['login', 'view', 'add']);
+        $this->Authentication->allowUnauthenticated(['login', 'view', 'add',]);
     }
 
     public function login()
     {
         $result = $this->Authentication->getResult();
         // If the user is logged in send them away.
-        debug($this->request->getData()); // Vérifiez les données envoyées
-        debug($result); // Vérifiez le résultat de l'authentification
-
         if ($result->isValid()) {
             $target = $this->Authentication->getLoginRedirect() ?? '/home';
             return $this->redirect($target);
