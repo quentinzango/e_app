@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Controller\Controller;
+
 /**
  * Users Controller
  *
@@ -11,11 +13,28 @@ namespace App\Controller;
  */
 class UsersController extends AppController
 {
+    public $Articles;
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+
+     public function initialize(): void
+     {
+         parent::initialize();
+         $this->Articles = $this->getTableLocator()->get('Articles'); // Charge le modèle Articles
+    }
+
+    public function homepage()
+    {
+        $articles = $this->Articles->find('all')
+            ->select(['id', 'name', 'image', 'created'])
+            ->order(['created' => 'DESC'])
+            ->toArray();
+
+        $this->set(compact('articles'));
+    }
 
     public function index()
     {
@@ -126,7 +145,7 @@ class UsersController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Authentication->allowUnauthenticated(['login', 'view', 'add',]);
+        $this->Authentication->allowUnauthenticated(['login', 'view', 'add', 'homepage']);
     }
 
     public function login()
@@ -134,7 +153,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // If the user is logged in send them away.
         if ($result->isValid()) {
-            $target = $this->Authentication->getLoginRedirect() ?? '/home';
+            $target = $this->Authentication->getLoginRedirect() ?? '/homepage';
             return $this->redirect($target);
         }
         if ($this->request->is('post')) {
