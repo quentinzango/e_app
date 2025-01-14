@@ -32,7 +32,7 @@ $cakeDescription = 'ZaqMarket';
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+
 </head>
 
 <body>
@@ -54,18 +54,17 @@ $cakeDescription = 'ZaqMarket';
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link nav-link-1 active" href="index.html">Photos</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-2" href="videos.html">Videos</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-1 active" href="index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-3" href="about.html">About</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-4" href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="navbar-nav ms-lg-auto flex-row justify-content-center py-3 py-lg-0 me-n2">
                 <?php if ($this->getRequest()->getSession()->read('User.loggedIn')) { ?>
-                    <?= $this->Html->link('connection', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'nav-link']) ?>
+                    <?= $this->Html->link('Deconnection', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'nav-link']) ?>
                 <?php } else { ?>
                     <?= $this->Html->link('Inscription', ['controller' => 'Users', 'action' => 'add'], ['class' => 'nav-link']) ?>
-                    <?= $this->Html->link('connection', ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link']) ?>
+                    <?= $this->Html->link('Connection', ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link']) ?>
                 <?php } ?>
 
             </div>
@@ -92,7 +91,7 @@ $cakeDescription = 'ZaqMarket';
             <div class="row">
                 <div class="col-lg-6 col-md-12 col-12 px-5 mb-5">
                     <h3 class="tm-text-primary mb-4 tm-footer-title">About ZaqMarket</h3>
-                    <p>Catalog-Z is free <a rel="sponsored" href="https://v5.getbootstrap.com/">Bootstrap 5</a> Alpha 2 HTML Template for video and photo websites. You can freely use this TemplateMo layout for a front-end integration with any kind of CMS website.</p>
+                    <p> ZaqMarket is an online marketplace that offers you the opportunity to enjoy a unique experience. Here, you can purchase what you like at unbeatable prices. Additionally, you have the possibility to post your own items and build a personalized sales network. Join a dynamic community and maximize your business opportunities with ZaqMarket!.</p>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
                     <h3 class="tm-text-primary mb-4 tm-footer-title">Our Links</h3>
@@ -131,6 +130,8 @@ $cakeDescription = 'ZaqMarket';
             $('body').addClass('loaded');
         });
     </script>
+
+    <?= $this->fetch('script') ?>
 </body>
 
 </html>

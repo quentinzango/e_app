@@ -121,4 +121,11 @@ class ArticlesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function viewarticle($id)
+    {
+        $article = $this->Articles->get($id);
+
+        $this->set(compact('article'));
+    }
 }

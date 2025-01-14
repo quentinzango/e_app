@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use cake\Http\Session;
 
 /**
  * Users Controller
@@ -20,10 +21,10 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      */
 
-     public function initialize(): void
-     {
-         parent::initialize();
-         $this->Articles = $this->getTableLocator()->get('Articles'); // Charge le modèle Articles
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->Articles = $this->getTableLocator()->get('Articles'); // Charge le modèle Articles
     }
 
     public function homepage()
@@ -150,14 +151,33 @@ class UsersController extends AppController
 
     public function login()
     {
+        $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
-        // If the user is logged in send them away.
-        if ($result->isValid()) {
-            $target = $this->Authentication->getLoginRedirect() ?? '/homepage';
-            return $this->redirect($target);
+        // indépendamment de POST ou GET, rediriger si l'utilisateur est connecté
+        if ($result && $result->isValid()) {
+            $session = new Session();
+            $session->write('User.loggedIn', true);
+            // rediriger vers /users après la connexion réussie
+            $user = $result->getData();
+            $role_id = $user->role_id;
+            if ($user->role_id === 1) {
+                $redirect = $this->request->getQuery('redirect', [
+                    'controller' => 'Users',
+                    'action' => 'homepage',
+                ]);
+            } else {
+                $redirect = $this->request->getQuery('redirect', [
+                    'controller' => 'Users',
+                    'action' => 'index',
+                ]);
+            }
+            return $this->redirect($redirect);
         }
-        if ($this->request->is('post')) {
-            $this->Flash->error('Invalid username or password');
+
+        // afficher une erreur si l'utilisateur a soumis un formulaire
+        // et que l'authentification a échoué
+        if ($this->request->is('post') && !$result->isValid()) {
+            $this->Flash->error(__('Votre identifiant ou votre mot de passe est incorrect'));
         }
     }
 
