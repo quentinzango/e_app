@@ -54,12 +54,20 @@ $cakeDescription = 'ZaqMarket';
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link nav-link-1 active" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-3" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-4" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-1 active" href="http://localhost/e_commerce/users/homepage">Home</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-3" href="http://localhost/e_commerce/users/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-4" href="http://localhost/e_commerce/users/contact">Contact</a></li>
+
                 </ul>
+
             </div>
             <div class="navbar-nav ms-lg-auto flex-row justify-content-center py-3 py-lg-0 me-n2">
+                <a href="<?= $this->Url->build(['controller' => 'Articles', 'action' => 'messages']) ?>" class="tm-message-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
+                    </svg>
+                </a>
+
                 <?php if ($this->getRequest()->getSession()->read('User.loggedIn')) { ?>
                     <?= $this->Html->link('Deconnection', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'nav-link']) ?>
                 <?php } else { ?>
@@ -70,14 +78,23 @@ $cakeDescription = 'ZaqMarket';
             </div>
         </div>
     </nav>
+
+    <!-- default.php -->
     <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="<?= $this->Url->build('/img/hero.jpg') ?>">
-        <form class="d-flex tm-search-form">
-            <input class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success tm-search-btn" type="submit">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
+        <?= $this->Form->create(null, ['url' => ['controller' => 'Articles', 'action' => 'search'], 'type' => 'post', 'class' => 'd-flex tm-search-form']) ?>
+        <?= $this->Form->control('search', [
+            'class' => 'form-control tm-search-input',
+            'placeholder' => 'Search',
+            'aria-label' => 'Search',
+            'label' => false // Désactive le label
+        ]) ?>
+        <button class="btn btn-outline-success tm-search-btn" type="submit">
+            <i class="fas fa-search"></i> <!-- Icône sans texte -->
+        </button>
+        <?= $this->Form->end() ?>
     </div>
+
+
 
     <main class="main">
         <div class="container">

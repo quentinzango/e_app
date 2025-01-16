@@ -42,6 +42,7 @@ class Article extends Entity
         'name' => true,
         'description' => true,
         'price' => true,
+        'views' => true,
         'status' => true,
         'localization' => true,
         'created' => true,

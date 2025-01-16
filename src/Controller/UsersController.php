@@ -149,6 +149,14 @@ class UsersController extends AppController
         $this->Authentication->allowUnauthenticated(['login', 'view', 'add', 'homepage']);
     }
 
+    public function about(){
+
+    }
+
+    public function contact(){
+        
+    }
+
     public function login()
     {
         $this->request->allowMethod(['get', 'post']);

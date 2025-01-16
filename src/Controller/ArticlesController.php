@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -47,7 +48,7 @@ class ArticlesController extends AppController
         $article = $this->Articles->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-        
+
             // Vérifiez si un fichier est fourni
             $file = $data['image'];
             if ($file && $file->getError() === UPLOAD_ERR_OK) {
@@ -58,24 +59,24 @@ class ArticlesController extends AppController
             } else {
                 $data['image'] = null; // Pas de fichier téléchargé
             }
-        
+
             $article = $this->Articles->patchEntity($article, $data);
             if ($this->Articles->save($article)) {
                 $this->Flash->success(__('The article has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
-        
+
             // Debug des erreurs si la sauvegarde échoue
             $this->Flash->error(__('The article could not be saved. Please, try again.'));
             debug($article->getErrors());
         }
-        
-    
+
+
         $users = $this->Articles->Users->find('list', ['limit' => 200]);
         $subcategories = $this->Articles->Subcategories->find('list', ['limit' => 200]);
         $this->set(compact('article', 'users', 'subcategories'));
     }
-    
+
 
 
     /**
@@ -127,5 +128,49 @@ class ArticlesController extends AppController
         $article = $this->Articles->get($id);
 
         $this->set(compact('article'));
+    }
+
+    public function incrementViews($id)
+    {
+        $article = $this->Articles->get($id);
+
+        // Incrémenter le nombre de vues
+        $article->views = $article->views + 1;
+
+        // Sauvegarder l'article avec les vues mises à jour
+        if ($this->Articles->save($article)) {
+            // Rediriger vers la page de l'article
+            return $this->redirect(['action' => 'viewarticle', $id]);
+        } else {
+            $this->Flash->error(__('The view count could not be updated.'));
+            return $this->redirect(['action' => 'index']);
+        }
+    }
+
+
+
+
+    // Exemple dans ArticlesController.php
+
+    public function search()
+    {
+        $searchTerm = $this->request->getData('search'); // Terme de recherche
+
+        // Rechercher les articles par nom
+        $articlesQuery = $this->Articles->find('all')
+            ->contain(['Subcategories'])
+            ->where(['Articles.name LIKE' => '%' . $searchTerm . '%']);
+
+        // Si la recherche concerne une sous-catégorie, vérifier si subcategorie_id existe
+        if ($this->request->getData('subcategorie_id')) {
+            $subcategoryId = $this->request->getData('subcategorie_id');
+            if ($subcategoryId) {
+                $articlesQuery->where(['Articles.subcategorie_id' => $subcategoryId]);
+            }
+        }
+
+        // Exécuter la requête
+        $articles = $articlesQuery->all();
+        $this->set(compact('articles'));
     }
 }
