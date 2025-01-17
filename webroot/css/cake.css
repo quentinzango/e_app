@@ -296,4 +296,14 @@ input[type='color'] {
     .desc:after {
         content: " \2190";
     }
+
+    .nav-link img {
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+    
+    .dropdown-menu {
+        min-width: 200px;
+    }
+    
 }

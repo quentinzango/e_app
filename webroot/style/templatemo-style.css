@@ -172,14 +172,6 @@ a:hover { color:#009999; }
     cursor: not-allowed;
 }
 
-.form-control {
-	padding: 10px 20px;
-	width: 100%;
-	height: auto;
-}
-
-.form-group { margin-bottom: 25px; }
-.tm-btn-big { padding: 12px 90px 14px; }
 
 .navbar-toggler:focus { box-shadow: none; }
 .navbar-brand {
